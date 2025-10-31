@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pizza extends ItemCardapio implements Serializable {
+    private static final long serialVersionUID = 1L;
     private TipoPizza tipo;
     private List<Recheio> recheios;
     private Borda borda;

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Venda implements Serializable, Comparable<Venda> {
+    private static final long serialVersionUID = 1L;
     private static int nextId = 1;
     private int id;
     private ItemCardapio item;

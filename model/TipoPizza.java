@@ -1,8 +1,8 @@
 package model;
-
 import java.io.Serializable;
 
-public class TipoPizza implements Serializable {
+public class TipoPizza implements Comparable<TipoPizza>, Serializable {
+    private static final long serialVersionUID = 1L;
     private String nome;
     private double precoBase;
     private String recheio;
@@ -15,6 +15,7 @@ public class TipoPizza implements Serializable {
         this.borda = borda;
     }
 
+
     public String getNome() { return nome; }
     public double getPrecoBase() { return precoBase; }
     public String getRecheio() { return recheio; }
@@ -23,5 +24,10 @@ public class TipoPizza implements Serializable {
     @Override
     public String toString() {
         return nome + " (MT " + String.format("%.2f", precoBase) + ")";
+    }
+
+    @Override
+    public int compareTo(TipoPizza outro) {
+        return Double.compare(this.precoBase, outro.precoBase);
     }
 }

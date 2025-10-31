@@ -9,6 +9,7 @@ public class BinarySearchTree<T extends Comparable<T>> implements Serializable {
     private int size;
 
     private static class Node<T> implements Serializable {
+        private static final long serialVersionUID = 1L;
         T data;
         Node<T> left, right;
 
@@ -64,4 +65,18 @@ public class BinarySearchTree<T extends Comparable<T>> implements Serializable {
 
     public int size() { return size; }
     public boolean isEmpty() { return root == null; }
+
+    public List<T> inOrderReversed() {
+        List<T> list = new ArrayList<>();
+        inOrderReversedRec(root, list);
+        return list;
+    }
+
+    private void inOrderReversedRec(Node<T> root, List<T> list) {
+        if (root != null) {
+            inOrderReversedRec(root.right, list);
+            list.add(root.data);
+            inOrderReversedRec(root.left, list);
+        }
+    }
 }

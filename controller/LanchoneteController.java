@@ -3,6 +3,7 @@ package controller;
 import dao.*;
 import model.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -264,6 +265,8 @@ public class LanchoneteController {
                 .collect(Collectors.toList());
     }
 
+
+
     // =========================
     // CÁLCULO DE PREÇO EM TEMPO REAL
     // =========================
@@ -374,5 +377,20 @@ public class LanchoneteController {
     public void limparArvoreVendas() {
         arvoreVendas = new BinarySearchTree<>();
         // Note: Isso apenas limpa a árvore em memória, não o arquivo
+    }
+
+    public List<TipoPizza> getCardapioPizzas() {
+        return new ArrayList<>(tiposPizza);
+    }
+
+    public List<Salgado> getTodosSalgados() {
+        List<ItemCardapio> itens = itemDAO.listarTodos();
+        List<Salgado> salgados = new ArrayList<>();
+        for (ItemCardapio item : itens) {
+            if (item instanceof Salgado) {
+                salgados.add((Salgado) item);
+            }
+        }
+        return salgados;
     }
 }
