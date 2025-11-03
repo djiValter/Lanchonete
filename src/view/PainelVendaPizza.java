@@ -5,9 +5,14 @@ import src.model.*;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Painel de venda de pizzas.
+ */
 public class PainelVendaPizza extends JPanel {
     private JComboBox<TipoPizza> cbTipoPizza;
     private JList<Molho> listMolhos;
@@ -59,13 +64,9 @@ public class PainelVendaPizza extends JPanel {
         // Quantidade e preços
         JPanel panelPreco = new JPanel(new GridLayout(4, 2, 5, 5));
         panelPreco.setBackground(Color.WHITE);
+
         panelPreco.add(new JLabel("Quantidade:"));
         txtQuantidade = new JTextField("1");
-        txtQuantidade.getDocument().addDocumentListener(new javax.swing.event.DocumentListener() {
-            public void changedUpdate(javax.swing.event.DocumentEvent e) { atualizarPrecos(); }
-            public void removeUpdate(javax.swing.event.DocumentEvent e) { atualizarPrecos(); }
-            public void insertUpdate(javax.swing.event.DocumentEvent e) { atualizarPrecos(); }
-        });
         panelPreco.add(txtQuantidade);
 
         panelPreco.add(new JLabel("Preço Base:"));
@@ -89,9 +90,7 @@ public class PainelVendaPizza extends JPanel {
         JPanel panelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         panelBotoes.setBackground(Color.WHITE);
         btnVender = criarBotao("Registrar Venda");
-        btnVender.addActionListener(e -> registrarVenda());
         JButton btnLimpar = criarBotao("Limpar");
-        btnLimpar.addActionListener(e -> limparCampos());
         panelBotoes.add(btnVender);
         panelBotoes.add(btnLimpar);
         mainPanel.add(panelBotoes);
@@ -108,9 +107,12 @@ public class PainelVendaPizza extends JPanel {
         add(mainPanel, BorderLayout.NORTH);
         add(scrollVendas, BorderLayout.CENTER);
 
-        // **Carregar dados do DAO**
+        // Carregar dados do DAO
         carregarDados();
-        atualizarPrecos();
+
+        // Adiciona listeners para atualizar preço automaticamente
+        adicionarListeners();
+
         listarVendasRecentes();
     }
 
@@ -136,6 +138,31 @@ public class PainelVendaPizza extends JPanel {
         listRecheios.setModel(modelRecheios);
     }
 
+    private void adicionarListeners() {
+        // Atualiza preço ao mudar quantidade
+        DocumentListener docListener = new DocumentListener() {
+            public void insertUpdate(javax.swing.event.DocumentEvent e) { atualizarPrecos(); }
+            public void removeUpdate(javax.swing.event.DocumentEvent e) { atualizarPrecos(); }
+            public void changedUpdate(javax.swing.event.DocumentEvent e) { atualizarPrecos(); }
+        };
+        txtQuantidade.getDocument().addDocumentListener(docListener);
+
+        // Atualiza preço ao mudar tipo de pizza
+        cbTipoPizza.addActionListener(e -> atualizarPrecos());
+
+        // Atualiza preço ao mudar seleção de molhos
+        listMolhos.addListSelectionListener(e -> atualizarPrecos());
+
+        // Atualiza preço ao mudar borda
+        listBordas.addListSelectionListener(e -> atualizarPrecos());
+
+        // Atualiza preço ao mudar recheios
+        listRecheios.addListSelectionListener(e -> atualizarPrecos());
+
+        // Botão vender
+        btnVender.addActionListener(e -> registrarVenda());
+    }
+
     private JLabel criarLabelSecao(String texto) {
         JLabel label = new JLabel(texto);
         label.setFont(new Font("Arial", Font.BOLD, 14));
@@ -158,11 +185,15 @@ public class PainelVendaPizza extends JPanel {
             if (tipo == null) return;
             double base = tipo.getPrecoBase();
             double adicionais = 0;
+
             for (Molho m : listMolhos.getSelectedValuesList()) adicionais += m.getPrecoAdicional();
             Borda b = listBordas.getSelectedValue();
             if (b != null) adicionais += b.getPrecoAdicional();
             for (Recheio r : listRecheios.getSelectedValuesList()) adicionais += r.getPrecoAdicional();
-            int qtd = Integer.parseInt(txtQuantidade.getText());
+
+            int qtd = 1;
+            try { qtd = Integer.parseInt(txtQuantidade.getText()); } catch (NumberFormatException ignored) {}
+
             lblPrecoBase.setText(String.format("R$ %.2f", base));
             lblPrecoAdicionais.setText(String.format("R$ %.2f", adicionais));
             lblPrecoTotal.setText(String.format("R$ %.2f", (base + adicionais) * qtd));
@@ -177,7 +208,8 @@ public class PainelVendaPizza extends JPanel {
         try {
             TipoPizza tipo = (TipoPizza) cbTipoPizza.getSelectedItem();
             if (tipo == null) return;
-            int qtd = Integer.parseInt(txtQuantidade.getText());
+            int qtd = 1;
+            try { qtd = Integer.parseInt(txtQuantidade.getText()); } catch (NumberFormatException ignored) {}
 
             Pizza pizza = new Pizza(tipo, listMolhos.getSelectedValuesList());
             pizza.setBorda(listBordas.getSelectedValue());

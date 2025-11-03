@@ -45,7 +45,7 @@ public class PainelVendaSalgado extends JPanel {
         recheiosKeys = new ArrayList<>(precoRecheios.keySet());
 
         initComponents();
-        atualizarPrecos();
+        // Removido: atualizarPrecos();
         listarVendasRecentes();
     }
 
@@ -214,14 +214,21 @@ public class PainelVendaSalgado extends JPanel {
             String massaKey = tiposMassaKeys.get(cbTipoMassa.getSelectedIndex());
 
             List<String> recheiosSelecionados = new ArrayList<>();
+            double adicionais = 0;
             for (int idx : listRecheios.getSelectedIndices()) {
-                recheiosSelecionados.add(recheiosKeys.get(idx));
+                String key = recheiosKeys.get(idx);
+                recheiosSelecionados.add(key);
+                adicionais += precoRecheios.get(key); // soma os adicionais corretamente
             }
 
-            Salgado salgado = new Salgado(tipoSalgadoKey,
+            double precoBase = precoTiposSalgado.get(tipoSalgadoKey) + precoTiposMassa.get(massaKey);
+
+            Salgado salgado = new Salgado(
+                    tipoSalgadoKey,
                     tipoSalgadoKey + " com " + String.join(", ", recheiosSelecionados),
                     recheiosSelecionados,
-                    precoTiposSalgado.get(tipoSalgadoKey) + precoTiposMassa.get(massaKey));
+                    precoBase + adicionais // aqui incluímos os adicionais
+            );
 
             controller.registrarVenda(salgado, qtd);
             JOptionPane.showMessageDialog(this, "Venda registrada!");
@@ -231,6 +238,7 @@ public class PainelVendaSalgado extends JPanel {
             JOptionPane.showMessageDialog(this, "Erro ao registrar venda: " + e.getMessage());
         }
     }
+
 
     // ===== Listar vendas =====
     private void listarVendasRecentes() {

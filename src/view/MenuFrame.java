@@ -35,6 +35,7 @@ public class MenuFrame extends JFrame {
         JButton btnListarVendas = criarBotao("📋 Listar Vendas");
         JButton btnSair = criarBotao("🚪 Sair");
 
+
         sidebar.add(btnRegistrarVendas);
         sidebar.add(btnListarPizzas);
         sidebar.add(btnListarSalgados);
@@ -55,6 +56,7 @@ public class MenuFrame extends JFrame {
         btnListarSalgados.addActionListener(e -> mostrarPainel(new PainelListarSalgados(controller)));
         btnListarVendas.addActionListener(e -> mostrarPainel(new PainelListarVendas(controller)));
         btnSair.addActionListener(e -> System.exit(0));
+
 
         // === Iniciar com tela de registrar vendas ===
         mostrarPainel(new PainelRegistrarVendas(controller, this));
