@@ -29,6 +29,7 @@ public class PainelVendaPizza extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
+        // Painel principal que conterá todo o conteúdo
         JPanel mainPanel = new JPanel();
         mainPanel.setLayout(new BoxLayout(mainPanel, BoxLayout.Y_AXIS));
         mainPanel.setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -37,6 +38,7 @@ public class PainelVendaPizza extends JPanel {
         // Tipo de Pizza
         mainPanel.add(criarLabelSecao("🍕 Tipo de Pizza"));
         cbTipoPizza = new JComboBox<>();
+        cbTipoPizza.setMaximumSize(new Dimension(Integer.MAX_VALUE, 30));
         mainPanel.add(cbTipoPizza);
         mainPanel.add(Box.createVerticalStrut(10));
 
@@ -44,26 +46,36 @@ public class PainelVendaPizza extends JPanel {
         mainPanel.add(criarLabelSecao("🍅 Molhos (Selecione um ou mais)"));
         listMolhos = new JList<>();
         listMolhos.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        mainPanel.add(new JScrollPane(listMolhos));
+        JScrollPane scrollMolhos = new JScrollPane(listMolhos);
+        scrollMolhos.setPreferredSize(new Dimension(0, 100));
+        scrollMolhos.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        mainPanel.add(scrollMolhos);
         mainPanel.add(Box.createVerticalStrut(10));
 
         // Bordas
         mainPanel.add(criarLabelSecao("🧀 Bordas (Selecione uma)"));
         listBordas = new JList<>();
         listBordas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        mainPanel.add(new JScrollPane(listBordas));
+        JScrollPane scrollBordas = new JScrollPane(listBordas);
+        scrollBordas.setPreferredSize(new Dimension(0, 100));
+        scrollBordas.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
+        mainPanel.add(scrollBordas);
         mainPanel.add(Box.createVerticalStrut(10));
 
         // Recheios
         mainPanel.add(criarLabelSecao("🥓 Recheios (Selecione um ou mais)"));
         listRecheios = new JList<>();
         listRecheios.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-        mainPanel.add(new JScrollPane(listRecheios));
+        JScrollPane scrollRecheios = new JScrollPane(listRecheios);
+        scrollRecheios.setPreferredSize(new Dimension(0, 120));
+        scrollRecheios.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
+        mainPanel.add(scrollRecheios);
         mainPanel.add(Box.createVerticalStrut(10));
 
         // Quantidade e preços
         JPanel panelPreco = new JPanel(new GridLayout(4, 2, 5, 5));
         panelPreco.setBackground(Color.WHITE);
+        panelPreco.setMaximumSize(new Dimension(Integer.MAX_VALUE, 120));
 
         panelPreco.add(new JLabel("Quantidade:"));
         txtQuantidade = new JTextField("1");
@@ -89,8 +101,10 @@ public class PainelVendaPizza extends JPanel {
         // Botões
         JPanel panelBotoes = new JPanel(new FlowLayout(FlowLayout.CENTER, 15, 0));
         panelBotoes.setBackground(Color.WHITE);
+        panelBotoes.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         btnVender = criarBotao("Registrar Venda");
         JButton btnLimpar = criarBotao("Limpar");
+        btnLimpar.addActionListener(e -> limparCampos());
         panelBotoes.add(btnVender);
         panelBotoes.add(btnLimpar);
         mainPanel.add(panelBotoes);
@@ -103,9 +117,19 @@ public class PainelVendaPizza extends JPanel {
         JScrollPane scrollVendas = new JScrollPane(areaVendas);
         scrollVendas.setBorder(BorderFactory.createTitledBorder("📜 Vendas de Pizza"));
         scrollVendas.setPreferredSize(new Dimension(0, 200));
+        scrollVendas.setMaximumSize(new Dimension(Integer.MAX_VALUE, 200));
 
-        add(mainPanel, BorderLayout.NORTH);
-        add(scrollVendas, BorderLayout.CENTER);
+        mainPanel.add(scrollVendas);
+
+        // SOLUÇÃO: Envolver todo o mainPanel em um JScrollPane
+        JScrollPane scrollPrincipal = new JScrollPane(mainPanel);
+        scrollPrincipal.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        scrollPrincipal.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPrincipal.getVerticalScrollBar().setUnitIncrement(16);
+        scrollPrincipal.setBorder(null);
+
+        // Adicionar o scroll ao painel principal
+        add(scrollPrincipal, BorderLayout.CENTER);
 
         // Carregar dados do DAO
         carregarDados();
@@ -168,6 +192,7 @@ public class PainelVendaPizza extends JPanel {
         label.setFont(new Font("Arial", Font.BOLD, 14));
         label.setForeground(new Color(70, 130, 180));
         label.setBorder(new EmptyBorder(5, 0, 5, 0));
+        label.setAlignmentX(Component.LEFT_ALIGNMENT);
         return label;
     }
 
