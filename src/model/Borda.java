@@ -3,20 +3,13 @@ package src.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-/**
- * Representa uma borda de pizza, com nome e preço adicional.
- * Pode ser persistida em ficheiro.
- */
-public class Borda implements Serializable {
+public class Borda implements Serializable, Comparable<Borda> {
     private static final long serialVersionUID = 1L;
 
     private String nome;
     private double precoAdicional;
-    private String descricao; // opcional — pode descrever o tipo da borda (ex: "recheada com catupiry")
+    private String descricao;
 
-    // ===========================
-    // CONSTRUTORES
-    // ===========================
     public Borda(String nome, double precoAdicional) {
         this.nome = nome;
         this.precoAdicional = precoAdicional;
@@ -29,36 +22,15 @@ public class Borda implements Serializable {
         this.descricao = descricao;
     }
 
-    // ===========================
-    // GETTERS E SETTERS
-    // ===========================
-    public String getNome() {
-        return nome;
-    }
+    public String getNome() { return nome; }
+    public void setNome(String nome) { this.nome = nome; }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+    public double getPrecoAdicional() { return precoAdicional; }
+    public void setPrecoAdicional(double precoAdicional) { this.precoAdicional = precoAdicional; }
 
-    public double getPrecoAdicional() {
-        return precoAdicional;
-    }
+    public String getDescricao() { return descricao; }
+    public void setDescricao(String descricao) { this.descricao = descricao; }
 
-    public void setPrecoAdicional(double precoAdicional) {
-        this.precoAdicional = precoAdicional;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    // ===========================
-    // MÉTODOS UTILITÁRIOS
-    // ===========================
     @Override
     public String toString() {
         if (descricao != null && !descricao.isEmpty()) {
@@ -78,5 +50,10 @@ public class Borda implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(nome);
+    }
+
+    @Override
+    public int compareTo(Borda outra) {
+        return Double.compare(this.precoAdicional, outra.precoAdicional);
     }
 }

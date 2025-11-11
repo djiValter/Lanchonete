@@ -6,6 +6,7 @@ import src.model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PainelListarSalgados extends JPanel {
 
@@ -56,30 +57,38 @@ public class PainelListarSalgados extends JPanel {
         comboMassas.removeAllItems();
         comboRecheios.removeAllItems();
 
-        // Tipos de salgado podem ser obtidos a partir dos nomes dos salgados cadastrados
         List<Salgado> salgados = controller.getSalgados();
         List<Recheio> recheios = controller.getRecheios();
 
-        // massas fixas (ou poderiam vir de um DAO futuro)
-        String[] massasPadrao = {"Tradicional", "Integral", "Folhada", "Fina"};
-
-        salgados.stream()
+        // ===== Tipos de Salgado ordenados pelo preço base =====
+        List<String> tiposOrdenados = salgados.stream()
+                .sorted((s1, s2) -> Double.compare(s1.calcularPrecoTotal(), s2.calcularPrecoTotal()))
                 .map(Salgado::getTipo)
                 .distinct()
-                .forEach(comboTiposSalgado::addItem);
+                .collect(Collectors.toList());
 
-        for (String massa : massasPadrao) {
-            comboMassas.addItem(massa);
-        }
+        tiposOrdenados.forEach(comboTiposSalgado::addItem);
 
-        recheios.forEach(comboRecheios::addItem);
+        // ===== Massas (mantemos padrão) =====
+        String[] massasPadrao = {"Tradicional", "Integral", "Folhada", "Fina"};
+        for (String massa : massasPadrao) comboMassas.addItem(massa);
 
+        // ===== Recheios ordenados pelo preço adicional =====
+        List<Recheio> recheiosOrdenados = recheios.stream()
+                .sorted((r1, r2) -> Double.compare(r1.getPrecoAdicional(), r2.getPrecoAdicional()))
+                .collect(Collectors.toList());
+        recheiosOrdenados.forEach(comboRecheios::addItem);
+
+        // ===== Cardápio de salgados ordenado pelo preço total =====
         StringBuilder sb = new StringBuilder("=== CARDÁPIO DE SALGADOS ===\n\n");
-
         if (salgados.isEmpty()) {
             sb.append("Nenhum salgado encontrado.\n");
         } else {
-            for (Salgado s : salgados) {
+            List<Salgado> salgadosOrdenados = salgados.stream()
+                    .sorted((s1, s2) -> Double.compare(s1.calcularPrecoTotal(), s2.calcularPrecoTotal()))
+                    .collect(Collectors.toList());
+
+            for (Salgado s : salgadosOrdenados) {
                 sb.append(s.getNome())
                         .append(" - R$ ")
                         .append(String.format("%.2f", s.calcularPrecoTotal()))

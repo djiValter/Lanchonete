@@ -3,7 +3,7 @@ package src.model;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Recheio implements Serializable {
+public class Recheio implements Serializable, Comparable<Recheio> {
     private static final long serialVersionUID = 1L;
 
     private String nome;
@@ -16,6 +16,11 @@ public class Recheio implements Serializable {
 
     public String getNome() { return nome; }
     public double getPrecoAdicional() { return precoAdicional; }
+
+    @Override
+    public String toString() {
+        return nome + " (+" + precoAdicional + " MT)";
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -31,7 +36,7 @@ public class Recheio implements Serializable {
     }
 
     @Override
-    public String toString() {
-        return nome + " (+" + precoAdicional + " MT)";
+    public int compareTo(Recheio outro) {
+        return Double.compare(this.precoAdicional, outro.precoAdicional);
     }
 }

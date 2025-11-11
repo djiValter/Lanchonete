@@ -64,23 +64,34 @@ public class PainelListarPizzas extends JPanel {
         comboBordas.removeAllItems();
         comboRecheios.removeAllItems();
 
+        // ===== Carrega filtros =====
         List<TipoPizza> tipos = controller.getTiposPizza();
         List<Molho> molhos = controller.getMolhos();
         List<Borda> bordas = controller.getBordas();
         List<Recheio> recheios = controller.getRecheios();
 
+        // Ordena pelo preço crescente
+        tipos.sort((p1, p2) -> Double.compare(p1.getPrecoBase(), p2.getPrecoBase()));
+        molhos.sort((m1, m2) -> Double.compare(m1.getPrecoAdicional(), m2.getPrecoAdicional()));
+        bordas.sort((b1, b2) -> Double.compare(b1.getPrecoAdicional(), b2.getPrecoAdicional()));
+        recheios.sort((r1, r2) -> Double.compare(r1.getPrecoAdicional(), r2.getPrecoAdicional()));
+
+        // Adiciona aos combos
         tipos.forEach(comboTiposPizza::addItem);
         molhos.forEach(comboMolhos::addItem);
         bordas.forEach(comboBordas::addItem);
         recheios.forEach(comboRecheios::addItem);
 
-        // Mostra o cardápio atual de pizzas
+        // Mostra o cardápio atual de pizzas em ordem crescente de preço
         StringBuilder sb = new StringBuilder("=== CARDÁPIO DE PIZZAS ===\n\n");
         List<Pizza> pizzas = controller.getPizzas();
 
         if (pizzas.isEmpty()) {
             sb.append("Nenhuma pizza encontrada.\n");
         } else {
+            // Ordena pelo preço total
+            pizzas.sort((p1, p2) -> Double.compare(p1.calcularPrecoTotal(), p2.calcularPrecoTotal()));
+
             for (Pizza p : pizzas) {
                 sb.append(p.getNome())
                         .append(" - R$ ")
@@ -91,4 +102,6 @@ public class PainelListarPizzas extends JPanel {
 
         areaResumo.setText(sb.toString());
     }
+
+
 }

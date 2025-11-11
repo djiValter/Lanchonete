@@ -1,6 +1,7 @@
 package src.view;
 
 import src.controller.LanchoneteController;
+import src.dao.BinarySearchTree;
 import src.model.*;
 
 import javax.swing.*;
@@ -45,7 +46,7 @@ public class PainelVendaSalgado extends JPanel {
         recheiosKeys = new ArrayList<>(precoRecheios.keySet());
 
         initComponents();
-        // Removido: atualizarPrecos();
+        carregarDados(); // << aqui!
         listarVendasRecentes();
     }
 
@@ -177,6 +178,43 @@ public class PainelVendaSalgado extends JPanel {
         mainPanel.add(scrollVendas);
         add(scrollPane, BorderLayout.CENTER);
     }
+
+    private void carregarDados() {
+        // ===== TIPOS DE SALGADO =====
+        List<String> tiposSalgado = new ArrayList<>(precoTiposSalgado.keySet());
+        tiposSalgado.sort((a, b) -> Double.compare(precoTiposSalgado.get(a), precoTiposSalgado.get(b)));
+
+        DefaultComboBoxModel<String> modelSalgado = new DefaultComboBoxModel<>();
+        for (String tipo : tiposSalgado) {
+            modelSalgado.addElement(tipo + " - MZN " + String.format("%.2f", precoTiposSalgado.get(tipo)));
+        }
+        cbTipoSalgado.setModel(modelSalgado);
+        tiposSalgadoKeys = tiposSalgado;
+
+        // ===== MASSAS =====
+        List<String> massas = new ArrayList<>(precoTiposMassa.keySet());
+        massas.sort((a, b) -> Double.compare(precoTiposMassa.get(a), precoTiposMassa.get(b)));
+
+        DefaultComboBoxModel<String> modelMassa = new DefaultComboBoxModel<>();
+        for (String massa : massas) {
+            modelMassa.addElement(massa + " - MZN " + String.format("%.2f", precoTiposMassa.get(massa)));
+        }
+        cbTipoMassa.setModel(modelMassa);
+        tiposMassaKeys = massas;
+
+        // ===== RECHEIOS =====
+        List<String> recheios = new ArrayList<>(precoRecheios.keySet());
+        recheios.sort((a, b) -> Double.compare(precoRecheios.get(a), precoRecheios.get(b)));
+
+        DefaultListModel<String> modelRecheios = new DefaultListModel<>();
+        for (String recheio : recheios) {
+            modelRecheios.addElement(recheio + " - MZN " + String.format("%.2f", precoRecheios.get(recheio)));
+        }
+        listRecheios.setModel(modelRecheios);
+        recheiosKeys = recheios;
+    }
+
+
 
     // ===== Atualização de preços =====
     private void atualizarPrecos() {

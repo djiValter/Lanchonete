@@ -1,6 +1,7 @@
 package src.view;
 
 import src.controller.LanchoneteController;
+import src.dao.BinarySearchTree;
 import src.model.*;
 
 import javax.swing.*;
@@ -141,26 +142,48 @@ public class PainelVendaPizza extends JPanel {
     }
 
     private void carregarDados() {
-        // Tipos de Pizza
+        // =====================
+        // TIPOS DE PIZZA
+        // =====================
+        BinarySearchTree<TipoPizza> arvorePizzas = new BinarySearchTree<>();
+        for (TipoPizza t : controller.getTiposPizza()) arvorePizzas.insert(t);
+
         DefaultComboBoxModel<TipoPizza> modelTipoPizza = new DefaultComboBoxModel<>();
-        for (TipoPizza t : controller.getTiposPizza()) modelTipoPizza.addElement(t);
+        for (TipoPizza t : arvorePizzas.inOrder()) modelTipoPizza.addElement(t);
         cbTipoPizza.setModel(modelTipoPizza);
 
-        // Molhos
+        // =====================
+        // MOLHOS
+        // =====================
+        BinarySearchTree<Molho> arvoreMolhos = new BinarySearchTree<>();
+        for (Molho m : controller.getMolhos()) arvoreMolhos.insert(m);
+
         DefaultListModel<Molho> modelMolhos = new DefaultListModel<>();
-        for (Molho m : controller.getMolhos()) modelMolhos.addElement(m);
+        for (Molho m : arvoreMolhos.inOrder()) modelMolhos.addElement(m);
         listMolhos.setModel(modelMolhos);
 
-        // Bordas
+        // =====================
+        // BORDAS
+        // =====================
+        BinarySearchTree<Borda> arvoreBordas = new BinarySearchTree<>();
+        for (Borda b : controller.getBordas()) arvoreBordas.insert(b);
+
         DefaultListModel<Borda> modelBordas = new DefaultListModel<>();
-        for (Borda b : controller.getBordas()) modelBordas.addElement(b);
+        for (Borda b : arvoreBordas.inOrder()) modelBordas.addElement(b);
         listBordas.setModel(modelBordas);
 
-        // Recheios
+        // =====================
+        // RECHEIOS
+        // =====================
+        BinarySearchTree<Recheio> arvoreRecheios = new BinarySearchTree<>();
+        for (Recheio r : controller.getRecheios()) arvoreRecheios.insert(r);
+
         DefaultListModel<Recheio> modelRecheios = new DefaultListModel<>();
-        for (Recheio r : controller.getRecheios()) modelRecheios.addElement(r);
+        for (Recheio r : arvoreRecheios.inOrder()) modelRecheios.addElement(r);
         listRecheios.setModel(modelRecheios);
     }
+
+
 
     private void adicionarListeners() {
         // Atualiza preço ao mudar quantidade
