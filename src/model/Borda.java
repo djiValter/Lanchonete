@@ -34,9 +34,9 @@ public class Borda implements Serializable, Comparable<Borda> {
     @Override
     public String toString() {
         if (descricao != null && !descricao.isEmpty()) {
-            return nome + " (" + descricao + ") - R$ " + String.format("%.2f", precoAdicional);
+            return nome + " (" + descricao + ") - MT " + String.format("%.2f", precoAdicional);
         }
-        return nome + " - R$ " + String.format("%.2f", precoAdicional);
+        return nome + " - MT " + String.format("%.2f", precoAdicional);
     }
 
     @Override

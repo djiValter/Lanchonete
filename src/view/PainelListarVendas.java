@@ -58,7 +58,7 @@ public class PainelListarVendas extends JPanel {
         add(painelFiltros, BorderLayout.SOUTH);
 
         // === Tabela ===
-        String[] colunas = {"Item", "Categoria", "Quantidade", "Preço Unitário (R$)", "Total (R$)", "Data/Hora"};
+        String[] colunas = {"Item", "Categoria", "Quantidade", "Preço Unitário (MT)", "Total (MT)", "Data/Hora"};
         modeloTabela = new DefaultTableModel(colunas, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {

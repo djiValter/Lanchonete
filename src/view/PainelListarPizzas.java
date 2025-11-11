@@ -94,7 +94,7 @@ public class PainelListarPizzas extends JPanel {
 
             for (Pizza p : pizzas) {
                 sb.append(p.getNome())
-                        .append(" - R$ ")
+                        .append(" - MT ")
                         .append(String.format("%.2f", p.calcularPrecoTotal()))
                         .append("\n");
             }

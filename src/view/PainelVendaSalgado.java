@@ -82,7 +82,7 @@ public class PainelVendaSalgado extends JPanel {
         form.add(new JLabel("Tipo de Salgado:"), gbc);
 
         String[] tiposSalgadoDisplay = precoTiposSalgado.keySet().stream()
-                .map(k -> k + " - MZN " + String.format("%.2f", precoTiposSalgado.get(k)))
+                .map(k -> k + " - MT " + String.format("%.2f", precoTiposSalgado.get(k)))
                 .toArray(String[]::new);
 
         cbTipoSalgado = new JComboBox<>(tiposSalgadoDisplay);
@@ -95,7 +95,7 @@ public class PainelVendaSalgado extends JPanel {
         form.add(new JLabel("Massa:"), gbc);
 
         String[] tiposMassaDisplay = precoTiposMassa.keySet().stream()
-                .map(k -> k + " - MZN " + String.format("%.2f", precoTiposMassa.get(k)))
+                .map(k -> k + " - MT " + String.format("%.2f", precoTiposMassa.get(k)))
                 .toArray(String[]::new);
 
         cbTipoMassa = new JComboBox<>(tiposMassaDisplay);
@@ -112,7 +112,7 @@ public class PainelVendaSalgado extends JPanel {
 
         DefaultListModel<String> recheiosModel = new DefaultListModel<>();
         for (String key : precoRecheios.keySet()) {
-            String display = key + " - MZN " + String.format("%.2f", precoRecheios.get(key));
+            String display = key + " - MT " + String.format("%.2f", precoRecheios.get(key));
             recheiosModel.addElement(display);
         }
         listRecheios = new JList<>(recheiosModel);
@@ -139,9 +139,9 @@ public class PainelVendaSalgado extends JPanel {
 
         // Preços
         row++;
-        lblPrecoBase = new JLabel("MZN 0.00");
-        lblPrecoAdicionais = new JLabel("MZN 0.00");
-        lblPrecoTotal = new JLabel("MZN 0.00");
+        lblPrecoBase = new JLabel("MT 0.00");
+        lblPrecoAdicionais = new JLabel("MT 0.00");
+        lblPrecoTotal = new JLabel("MT 0.00");
         lblPrecoTotal.setFont(new Font("Segoe UI", Font.BOLD, 14));
         lblPrecoTotal.setForeground(new Color(0, 100, 0));
 
@@ -186,7 +186,7 @@ public class PainelVendaSalgado extends JPanel {
 
         DefaultComboBoxModel<String> modelSalgado = new DefaultComboBoxModel<>();
         for (String tipo : tiposSalgado) {
-            modelSalgado.addElement(tipo + " - MZN " + String.format("%.2f", precoTiposSalgado.get(tipo)));
+            modelSalgado.addElement(tipo + " - MT " + String.format("%.2f", precoTiposSalgado.get(tipo)));
         }
         cbTipoSalgado.setModel(modelSalgado);
         tiposSalgadoKeys = tiposSalgado;
@@ -197,7 +197,7 @@ public class PainelVendaSalgado extends JPanel {
 
         DefaultComboBoxModel<String> modelMassa = new DefaultComboBoxModel<>();
         for (String massa : massas) {
-            modelMassa.addElement(massa + " - MZN " + String.format("%.2f", precoTiposMassa.get(massa)));
+            modelMassa.addElement(massa + " - MT " + String.format("%.2f", precoTiposMassa.get(massa)));
         }
         cbTipoMassa.setModel(modelMassa);
         tiposMassaKeys = massas;
@@ -208,7 +208,7 @@ public class PainelVendaSalgado extends JPanel {
 
         DefaultListModel<String> modelRecheios = new DefaultListModel<>();
         for (String recheio : recheios) {
-            modelRecheios.addElement(recheio + " - MZN " + String.format("%.2f", precoRecheios.get(recheio)));
+            modelRecheios.addElement(recheio + " - MT " + String.format("%.2f", precoRecheios.get(recheio)));
         }
         listRecheios.setModel(modelRecheios);
         recheiosKeys = recheios;
@@ -232,14 +232,14 @@ public class PainelVendaSalgado extends JPanel {
                 adicionais += precoRecheios.get(key);
             }
 
-            lblPrecoBase.setText(String.format("MZN %.2f", base));
-            lblPrecoAdicionais.setText(String.format("MZN %.2f", adicionais));
-            lblPrecoTotal.setText(String.format("MZN %.2f", (base + adicionais) * qtd));
+            lblPrecoBase.setText(String.format("MT %.2f", base));
+            lblPrecoAdicionais.setText(String.format("MT %.2f", adicionais));
+            lblPrecoTotal.setText(String.format("MT %.2f", (base + adicionais) * qtd));
 
         } catch (Exception e) {
-            lblPrecoBase.setText("MZN 0.00");
-            lblPrecoAdicionais.setText("MZN 0.00");
-            lblPrecoTotal.setText("MZN 0.00");
+            lblPrecoBase.setText("MT 0.00");
+            lblPrecoAdicionais.setText("MT 0.00");
+            lblPrecoTotal.setText("MT 0.00");
         }
     }
 

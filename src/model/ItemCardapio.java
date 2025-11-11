@@ -25,6 +25,6 @@ public abstract class ItemCardapio implements Serializable {
 
     @Override
     public String toString() {
-        return nome + " (R$ " + calcularPrecoTotal() + ")";
+        return nome + " (MT " + calcularPrecoTotal() + ")";
     }
 }

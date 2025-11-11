@@ -90,7 +90,7 @@ public class PainelListarSalgados extends JPanel {
 
             for (Salgado s : salgadosOrdenados) {
                 sb.append(s.getNome())
-                        .append(" - R$ ")
+                        .append(" - MT ")
                         .append(String.format("%.2f", s.calcularPrecoTotal()))
                         .append("\n");
             }

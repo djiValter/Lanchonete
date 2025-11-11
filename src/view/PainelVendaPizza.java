@@ -83,15 +83,15 @@ public class PainelVendaPizza extends JPanel {
         panelPreco.add(txtQuantidade);
 
         panelPreco.add(new JLabel("Preço Base:"));
-        lblPrecoBase = new JLabel("R$ 0.00");
+        lblPrecoBase = new JLabel("MT 0.00");
         panelPreco.add(lblPrecoBase);
 
         panelPreco.add(new JLabel("Adicionais:"));
-        lblPrecoAdicionais = new JLabel("R$ 0.00");
+        lblPrecoAdicionais = new JLabel("MT 0.00");
         panelPreco.add(lblPrecoAdicionais);
 
         panelPreco.add(new JLabel("Preço Total:"));
-        lblPrecoTotal = new JLabel("R$ 0.00");
+        lblPrecoTotal = new JLabel("MT 0.00");
         lblPrecoTotal.setForeground(new Color(0, 128, 0));
         lblPrecoTotal.setFont(new Font("Arial", Font.BOLD, 14));
         panelPreco.add(lblPrecoTotal);
@@ -242,13 +242,13 @@ public class PainelVendaPizza extends JPanel {
             int qtd = 1;
             try { qtd = Integer.parseInt(txtQuantidade.getText()); } catch (NumberFormatException ignored) {}
 
-            lblPrecoBase.setText(String.format("R$ %.2f", base));
-            lblPrecoAdicionais.setText(String.format("R$ %.2f", adicionais));
-            lblPrecoTotal.setText(String.format("R$ %.2f", (base + adicionais) * qtd));
+            lblPrecoBase.setText(String.format("MT %.2f", base));
+            lblPrecoAdicionais.setText(String.format("MT %.2f", adicionais));
+            lblPrecoTotal.setText(String.format("MT %.2f", (base + adicionais) * qtd));
         } catch (Exception e) {
-            lblPrecoBase.setText("R$ 0.00");
-            lblPrecoAdicionais.setText("R$ 0.00");
-            lblPrecoTotal.setText("R$ 0.00");
+            lblPrecoBase.setText("MT 0.00");
+            lblPrecoAdicionais.setText("MT 0.00");
+            lblPrecoTotal.setText("MT 0.00");
         }
     }
 
